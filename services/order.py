@@ -9,14 +9,17 @@ User = get_user_model()
 
 
 @transaction.atomic
-def create_order(tickets: list[dict], username: str, date: str = None) -> Order:
+def create_order(
+        tickets: list[dict],
+        username: str,
+        date: str = None
+) -> Order:
     user = User.objects.get(username=username)
     order = Order.objects.create(user=user)
 
     if date is not None:
         Order.objects.filter(id=order.id).update(created_at=date)
         order.created_at = date
-
 
     for ticket_data in tickets:
         Ticket.objects.create(
