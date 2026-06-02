@@ -62,10 +62,13 @@ class MovieSession(models.Model):
 
 class Order(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"{self.created_at}"
@@ -95,7 +98,8 @@ class Ticket(models.Model):
         if self.seat > self.movie_session.cinema_hall.seats_in_row:
             raise ValidationError({
                 "seat": [
-                    f"seat number must be in available range: (1, seats_in_row): "
+                    f"seat number must be in available range: "
+                    f"(1, seats_in_row): "
                     f"(1, {self.movie_session.cinema_hall.seats_in_row})"
                 ]
             })
