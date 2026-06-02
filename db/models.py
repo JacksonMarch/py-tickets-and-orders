@@ -61,7 +61,7 @@ class MovieSession(models.Model):
 
 
 class Order(models.Model):
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
@@ -76,9 +76,15 @@ class Order(models.Model):
 
 class Ticket(models.Model):
     movie_session = models.ForeignKey(
-        to=MovieSession, on_delete=models.CASCADE
+        "MovieSession",
+        on_delete=models.CASCADE,
+        related_name="tickets"
     )
-    order = models.ForeignKey(to=Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(
+        "Order",
+        on_delete=models.CASCADE,
+        related_name="tickets"
+    )
     row = models.IntegerField()
     seat = models.IntegerField()
 
